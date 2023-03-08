@@ -8,10 +8,19 @@ import {
   iOSThemeColorsProtocolFormatter,
   iOSThemeProtocolFormatter,
 } from './formatters/ios_formatters';
+import {parseCoreTokens} from './parsers/tokens_parser';
 
 export function config(tokensPath: string, outputPath: string): Config {
   return {
     source: [tokensPath],
+    parsers: [
+      {
+        pattern: /\(core.json)$/,
+        parse: ({contents}) => {
+          return parseCoreTokens(contents);
+        },
+      },
+    ],
     format: {
       androidThemeFormat: androidThemeFormat,
       androidThemeAttrsFormat: androidThemeAttrsFormat,
